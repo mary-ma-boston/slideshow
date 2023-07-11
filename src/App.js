@@ -25,23 +25,33 @@ const SLIDES = [
 
 function App() {
   const [isLocated, setIsLocated] = useState(0);
+  const [prevDisable, setPreDisable] = useState(false);
+  const [nextDisable, setNextDisable] = useState(false);
 
   const restartHandler = () => {
     setIsLocated(0);
+    setNextDisable(false);
+    setPreDisable(false);
   };
 
   const prevHandler = () => {
     if(isLocated === 0) {
-      return;
+      setPreDisable(true);
+      return
     }
     setIsLocated(prevState => prevState-1);
+    setPreDisable(false);
+    setNextDisable(false);
   };
 
   const nextHandler = () => {
     if(isLocated === SLIDES.length-1){
-      return;
+      setNextDisable(true);
+      return
     }
     setIsLocated(prevState => prevState+1);
+    setNextDisable(false);
+    setPreDisable(false);
   }
  
 
@@ -50,8 +60,8 @@ function App() {
         <h1>SlideShow</h1>
         <div className='buttonCon'>
           <button onClick={restartHandler}>Restart</button>
-          <button onClick={prevHandler}>Prev</button>
-          <button onClick={nextHandler}>Next</button>
+          <button onClick={prevHandler} disabled={prevDisable}>Prev</button>
+          <button onClick={nextHandler} disabled={nextDisable}>Next</button>
         </div>
         <SlidePage data={SLIDES[isLocated]}/>
       </div>
